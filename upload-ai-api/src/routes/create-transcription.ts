@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
-import { prisma } from "../lib/prisma";
-import { z } from "zod";
 import { createReadStream } from "node:fs";
+import { z } from "zod";
+import { prisma } from "../lib/prisma";
 import { openai } from "../lib/openai";
 
 export async function createTranscriptionRoute(app: FastifyInstance) {
