@@ -6,6 +6,7 @@ import { Button } from "./ui/button";
 import { ChangeEvent, FormEvent, useMemo, useRef, useState } from "react";
 import { getFFmpeg } from "@/lib/ffmpeg";
 import { fetchFile } from "@ffmpeg/util";
+import { api } from "../lib/axios";
 
 export default function VideoInputForm() {
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -73,7 +74,19 @@ export default function VideoInputForm() {
 
     const audioFile = await convertVideoToAudio(videoFile);
 
-    console.log(audioFile, prompt);
+    const data = new FormData();
+
+    data.append("file", audioFile);
+
+    const response = await api.post("/videos", data);
+
+    const videoID = response.data.video.id;
+
+    await api.post(`/videos/${videoID}/transcription`, {
+      prompt,
+    });
+
+    console.log("Final");
   }
 
   const previewURL = useMemo(() => {
