@@ -9,6 +9,7 @@ export async function createTranscriptionRoute(app: FastifyInstance) {
     const paramsSchema = z.object({
       videoId: z.string().uuid(),
     });
+
     const { videoId } = paramsSchema.parse(req.params);
 
     const bodySchema = z.object({
