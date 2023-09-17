@@ -1,7 +1,4 @@
-import { api } from "@/lib/axios";
-import { Wand2 } from "lucide-react";
-import { FormEvent, useEffect, useState } from "react";
-import { Label } from "./ui/label";
+import { useEffect, useState } from "react";
 import {
   Select,
   SelectContent,
@@ -9,9 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./ui/select";
-import { Separator } from "./ui/separator";
-import { Slider } from "./ui/slider";
-import { Button } from "./ui/button";
+import { api } from "@/lib/axios";
 
 interface Prompt {
   id: string;
@@ -19,34 +14,12 @@ interface Prompt {
   template: string;
 }
 
-interface PromptProps {
+interface PromptSelectProps {
   onPromptSelected: (template: string) => void;
-  // onTemperature: (temperature: number) => void;
-  // onFormSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  // isLoading: boolean;
 }
 
-export default function PromptSelect(props: PromptProps) {
+export function PromptSelect(props: PromptSelectProps) {
   const [prompts, setPrompts] = useState<Prompt[] | null>(null);
-  const [temperature, setTemperature] = useState(0.5);
-
-  // const {
-  //   input,
-  //   setInput,
-  //   handleInputChange,
-  //   handleSubmit,
-  //   completion,
-  //   isLoading,
-  // } = useCompletion({
-  //   api: "http://localhost:3333/ai/complete",
-  //   body: {
-  //     videoId,
-  //     temperature,
-  //   },
-  //   headers: {
-  //     "Content-type": "application/json",
-  //   },
-  // });
 
   useEffect(() => {
     api.get("/prompts").then((response) => {
@@ -57,7 +30,9 @@ export default function PromptSelect(props: PromptProps) {
   function handlePromptSelected(promptId: string) {
     const selectedPrompt = prompts?.find((prompt) => prompt.id === promptId);
 
-    if (!selectedPrompt) return;
+    if (!selectedPrompt) {
+      return;
+    }
 
     props.onPromptSelected(selectedPrompt.template);
   }
